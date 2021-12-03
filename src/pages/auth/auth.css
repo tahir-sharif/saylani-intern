@@ -1,0 +1,59 @@
+.MuiBox-root {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.form {
+  width: 80%;
+  max-width: 550px;
+  box-shadow: 0 0 55px #00000026;
+  border-radius: 9px;
+  background: #f6fcff;
+}
+.form.signup {
+  min-height: 360px;
+}
+.form.login {
+  min-height: 310px;
+}
+.form.login .inputFields {
+  height: 130px;
+}
+.form,
+.inputFields {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+  transition: 0.3s;
+}
+.inputFields {
+  width: 80%;
+  height: 168px;
+}
+.form .formHeading {
+  color: gray;
+  font-weight: 600;
+  font-size: 25px;
+}
+.inputFields .MuiInput-root {
+  margin: 12px 0;
+  width: 100%;
+}
+.inputFields input {
+  width: 80%;
+}
+.button button {
+    background-color: rgb(0, 183, 255);
+}
+.button button:hover {
+    background-color: rgb(0, 166, 231);
+}
+@media only screen and (max-width: 500px) {
+  .form {
+    width: 90%;
+  }
+  .inputFields input {
+    width: 90%;
+  }
+}
