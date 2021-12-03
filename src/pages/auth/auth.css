@@ -1,4 +1,11 @@
-.MuiBox-root {
+.authForm {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.authForm .MuiBox-root {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -44,10 +51,10 @@
   width: 80%;
 }
 .button button {
-    background-color: rgb(0, 183, 255);
+  background-color: rgb(0, 183, 255);
 }
 .button button:hover {
-    background-color: rgb(0, 166, 231);
+  background-color: rgb(0, 166, 231);
 }
 @media only screen and (max-width: 500px) {
   .form {
