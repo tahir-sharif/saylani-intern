@@ -1,11 +1,12 @@
 import React from "react";
 import Navbar from "../../components/Navbar";
-
+import "./home.css";
+import Settings from "../settings/Settings";
 const Home = () => {
   return (
     <div>
       <Navbar />
-      <h2>Home</h2>
+      <Settings />
     </div>
   );
 };

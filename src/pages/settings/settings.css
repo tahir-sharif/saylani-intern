@@ -1,0 +1,47 @@
+.settingsContainer {
+  width: 100%;
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  color: rgb(92, 92, 92);
+}
+.mnSettings {
+  margin-top: 2%;
+  width: 97%;
+  min-height: calc((100vh - 90px));
+  background-color: white;
+  box-shadow: 0 0 5px blanchedalmond;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.mnSettings h2 {
+  text-align: center;
+  margin: 8px 0;
+}
+.settings {
+  margin-top: 5%;
+  width: 90%;
+}
+.settingsBox {
+  margin: 24px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.settingsBox
+  .MuiInput-root.MuiInput-underline.MuiInputBase-root.MuiInputBase-colorPrimary.css-a88p61-MuiInputBase-root-MuiInput-root {
+  width: 80%;
+  color: rgb(102, 102, 102);
+}
+.settingsBox .settingsName {
+  display: inline-block;
+  font-weight: 600;
+  min-width: 14%;
+}
+@media only screen and (max-width: 600px) {
+  .settingsContainer {
+    min-height: calc(100vh - 56px);
+  }
+}

@@ -4,7 +4,7 @@ import Input from "@mui/material/Input";
 import Button from "@mui/material/Button";
 import { Link as Mlink, useNavigate } from "react-router-dom";
 import "./auth.css";
-import { auth } from "../../firebase/Firebase";
+import { auth, fireStore } from "../../firebase/Firebase";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -22,12 +22,12 @@ const Login = () => {
       .signInWithEmailAndPassword(loginData.email, loginData.password)
       .then((user) => {
         console.log("Logged in as", user.user.email);
-        setloginData({})
-        navigate('/home')
+        setloginData({});
+        navigate("/home");
       });
   };
   return (
-    <div className='authForm'>
+    <div className="authForm">
       <Box autoComplete="off">
         <div className="form login">
           <div className="formHeading">Login</div>
