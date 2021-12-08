@@ -13,11 +13,17 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { useNavigate } from "react-router";
 
-const Navbar = () => {
+const Navbar = ({ setsettingsActive }) => {
   const navigate = useNavigate();
   const pages = ["Products", "Pricing", "Blog"];
   const settings = [
-    { name: "Profile" },
+    {
+      name: "Profile",
+      onclick: () => {
+        setsettingsActive(true);
+        handleCloseUserMenu();
+      },
+    },
     { name: "Dashboard" },
     {
       name: "Logout",
