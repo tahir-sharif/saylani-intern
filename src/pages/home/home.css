@@ -1,0 +1,14 @@
+.pageContainer {
+    width: 100%;
+    min-height: calc(100vh - 64px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: rgb(92, 92, 92);
+}
+@media only screen and (max-width: 600px) {
+  .pageContainer {
+    min-height: calc(100vh - 56px);
+  }
+}

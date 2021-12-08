@@ -1,20 +1,12 @@
-.settingsContainer {
-  width: 100%;
-  min-height: calc(100vh - 64px);
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  color: rgb(92, 92, 92);
-}
 .mnSettings {
-  margin-top: 2%;
   width: 97%;
   min-height: calc((100vh - 90px));
   background-color: white;
-  box-shadow: 0 0 5px blanchedalmond;
+  box-shadow: 0 0 19px #5252524a;
   display: flex;
   align-items: center;
   flex-direction: column;
+  position: relative;
 }
 .mnSettings h2 {
   text-align: center;
@@ -40,8 +32,14 @@
   font-weight: 600;
   min-width: 14%;
 }
+.saveChangesButtons {
+  position: absolute;
+  height: 55px;
+  margin-left: 2%;
+  bottom: 0px;
+}
 @media only screen and (max-width: 600px) {
-  .settingsContainer {
-    min-height: calc(100vh - 56px);
+  .saveChangesButtons {
+  height: 50px;
   }
 }
