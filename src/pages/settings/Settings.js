@@ -79,7 +79,7 @@ const Settings = ({
       const file = imageRef.current.files[0];
       const name = imageRef.current.files[0].name;
       console.log(profileImageUrl);
-      profileImageUrl.length
+      profileImageUrl
         ? storage
             .refFromURL(profileImageUrl)
             .delete()

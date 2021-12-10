@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useRef } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -13,8 +14,42 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { auth } from "../../firebase/Firebase";
 import { useNavigate } from "react-router";
+import SearchIcon from "@mui/icons-material/Search";
+import "./nav.css";
+import { styled, alpha } from "@mui/material/styles";
+import InputBase from "@mui/material/InputBase";
+import { fireStore } from "../../firebase/Firebase";
 
 const Navbar = ({ setsettingsActive, profileImageUrl }) => {
+  const [usersData, setusersData] = React.useState([]);
+  const [dataSet, setdataSet] = React.useState(false);
+  const [suggestionData, setsuggestionData] = useState([]);
+  const [inputValue, setinputValue] = useState("");
+
+  fireStore.collection("usersData").onSnapshot((snap) => {
+    const dataArr = [];
+    snap.docChanges().forEach((change) => {
+      if (change.type === "added") {
+        dataArr.push(change.doc.data());
+      }
+    });
+    if (!dataSet) {
+      setusersData(dataArr);
+      console.log(dataArr);
+      setdataSet(true);
+    }
+  });
+  const filterSuggestion = (e) => {
+    const searchWord = e.target.value;
+    setinputValue(searchWord);
+    const myArr = usersData.map((obj) => obj.name);
+    const filteredData = myArr.filter((name) => {
+      const lowerCaseName = name.toLowerCase();
+      return lowerCaseName.indexOf(searchWord.toLowerCase()) !== -1;
+    });
+    setsuggestionData(filteredData);
+  };
+
   const navigate = useNavigate();
   const settings = [
     {
@@ -29,7 +64,7 @@ const Navbar = ({ setsettingsActive, profileImageUrl }) => {
       name: "Logout",
       onclick: () => {
         console.log("logout");
-        auth.signOut()
+        auth.signOut();
         navigate("/login");
       },
     },
@@ -52,6 +87,44 @@ const Navbar = ({ setsettingsActive, profileImageUrl }) => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  const Search = styled("div")(({ theme }) => ({
+    position: "relative",
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    "&:hover": {
+      backgroundColor: alpha(theme.palette.common.white, 0.25),
+    },
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      marginLeft: theme.spacing(3),
+      width: "auto",
+    },
+  }));
+  const SearchIconWrapper = styled("div")(({ theme }) => ({
+    padding: theme.spacing(0, 2),
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  }));
+
+  const StyledInputBase = styled(InputBase)(({ theme }) => ({
+    color: "inherit",
+    "& .MuiInputBase-input": {
+      padding: theme.spacing(1, 1, 1, 0),
+      // vertical padding + font size from searchIcon
+      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+      transition: theme.transitions.create("width"),
+      width: "100%",
+      [theme.breakpoints.up("md")]: {
+        width: "20ch",
+      },
+    },
+  }));
 
   return (
     <AppBar position="static">
@@ -63,6 +136,32 @@ const Navbar = ({ setsettingsActive, profileImageUrl }) => {
             component="div"
             sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
           >
+            <div className="srch">
+              <Search>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Search…"
+                  inputProps={{
+                    "aria-label": "search",
+                    value: inputValue,
+                    onChange: filterSuggestion,
+                    autoFocus: "ture",
+                  }}
+                />
+              </Search>
+              <div className="suggestions">
+                {suggestionData.length
+                  ? // <div className="suggestion">Tahir</div>
+                    // <div className="suggestion">Tahir</div>
+                    // <div className="suggestion">Tahir</div>
+                    suggestionData.map((obj) => {
+                      return <div className="suggestion">{obj}</div>;
+                    })
+                  : ""}
+              </div>
+            </div>
             APP
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
@@ -83,6 +182,7 @@ const Navbar = ({ setsettingsActive, profileImageUrl }) => {
                 <Avatar src={profileImageUrl} alt="Remy Sharp" />
               </IconButton>
             </Tooltip>
+
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"

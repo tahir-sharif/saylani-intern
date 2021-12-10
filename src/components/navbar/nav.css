@@ -1,0 +1,36 @@
+.css-96uuyl {
+  margin-left: 0px !important;
+  width: 100% !important;
+}
+.srch {
+  margin-left: 0px;
+  position: relative;
+  width: initial;
+}
+.srch input {
+  width: 100%;
+}
+.css-1083xa6-MuiTypography-root {
+  overflow: visible !important;
+}
+.suggestions {
+  position: absolute;
+  background: rgb(255, 255, 255) !important;
+  width: 100%;
+  z-index: 50;
+  top: 40px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 5px #00000057;
+}
+.suggestion {
+  color: #7e7e7e;
+  cursor: pointer;
+  padding: 3px 12px;
+  font-size: 19px;
+  transition: 0.2s;
+}
+.suggestion:hover {
+  background-color: rgb(230, 230, 230);
+}

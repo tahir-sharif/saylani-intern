@@ -46,7 +46,7 @@
 .uploadPostPop {
   position: fixed;
   background-color: white;
-  top: 14%;
+  top: 40px;
   z-index: 10;
   border-radius: 11px;
   box-shadow: 0 0 11px #0000002b;
@@ -54,6 +54,7 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
+  max-height: calc(100vh - 80px);
 }
 .uploadPostPop
   .MuiInput-root.MuiInput-underline.MuiInputBase-root.MuiInputBase-colorPrimary.css-a88p61-MuiInputBase-root-MuiInput-root {
