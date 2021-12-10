@@ -11,11 +11,11 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import { auth } from "../../firebase/Firebase";
 import { useNavigate } from "react-router";
 
-const Navbar = ({ setsettingsActive }) => {
+const Navbar = ({ setsettingsActive, profileImageUrl }) => {
   const navigate = useNavigate();
-  const pages = ["Products", "Pricing", "Blog"];
   const settings = [
     {
       name: "Profile",
@@ -29,6 +29,7 @@ const Navbar = ({ setsettingsActive }) => {
       name: "Logout",
       onclick: () => {
         console.log("logout");
+        auth.signOut()
         navigate("/login");
       },
     },
@@ -79,7 +80,7 @@ const Navbar = ({ setsettingsActive }) => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" />
+                <Avatar src={profileImageUrl} alt="Remy Sharp" />
               </IconButton>
             </Tooltip>
             <Menu

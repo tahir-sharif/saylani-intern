@@ -1,0 +1,14 @@
+.noUser {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.noUser .link {
+  color: rgb(0, 63, 201);
+  cursor: pointer;
+}
+.noUser .link:hover {
+  text-decoration: underline;
+}

@@ -1,35 +1,112 @@
-import React, { useState } from "react";
-import UploadButton from "../../components/uploadButton/UploadButton";
-import { storage } from "../../firebase/Firebase";
-import { styled } from "@mui/material/styles";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import PhotoCamera from "@mui/icons-material/PhotoCamera";
-import Stack from "@mui/material/Stack";
+import React, { useRef, useState } from "react";
+import { fireStore, storage } from "../../firebase/Firebase";
+import { Input, Button } from '@mui/material'
+import IconButton from '@mui/material/IconButton';
+import ImageIcon from '@mui/icons-material/Image';
+import Stack from '@mui/material/Stack';
+import CloseIcon from '@mui/icons-material/Close';
 
-const HomesContent = () => {
+const HomesContent = ({ getFireStoreData }) => {
+
+  const [postPopup, setpostPopup] = useState(false)
   const [image, setimage] = useState("");
+  const [imageTarget, setimageTarget] = useState({})
+  const inputField = useRef()
+
   const imageHandler = (e) => {
     if (e.target.files[0]) {
-      console.log(e.target.files[0]);
-      setimage(e.target.files[0]);
+      const image = URL.createObjectURL(e.target.files[0])
+      setimage(image);
+      setimageTarget(e.target.files)
+    } else {
+      setimageTarget({})
+      setimage('')
     }
   };
+  const closePopup = () => {
+    setimage('')
+    setpostPopup(false)
+  }
 
-  const uploadImageToStorage = (path, imageName) => {
-    let reference = storage().ref(imageName);
-    let task = reference.putFile(path);
+  const closeImagePreview = () => {
+    setimage('')
+  }
 
-    task
-      .then(() => {
-        console.log("Image uploaded to the bucket!");
-      })
-      .catch((e) => console.log("uploading image error => ", e));
+  const uploadImageToStorage = (image, imageName) => {
+    let reference = storage.ref(`images/${imageName}`);
+    let task = reference.put(image);
+
+    task.on(
+      "state_changed",
+      snapshot => { },
+      error => { console.log(error) },
+      () => {
+        storage
+          .ref(`images`)
+          .child(imageName)
+          .getDownloadURL().then((url) => {
+            console.log(url)
+            fireStore.collection('posts').add({
+              text: inputField.current.value,
+              imageUrl: url
+            })
+          })
+      }
+    )
   };
+
+  const postContent = () => {
+    const txt = inputField.current.value
+    if (imageTarget) {
+      uploadImageToStorage(imageTarget[0], imageTarget[0].name)
+    } else {
+      fireStore.collection('posts').add({
+        text: txt
+      })
+    }
+  }
+
   return (
-    <div className="uploadImage">
-        {image.name}
-      <input type="file" onChange={imageHandler} />
+    <div className="posts">
+      <div className="uploadContent" onClick={() => setpostPopup(true)}>
+        <div className="wts">What's On your Mind, {'Tahir'}?</div>
+      </div>
+
+      {postPopup ?
+        <>
+          <div className="backdrop" onClick={closePopup}></div>
+          <div className="uploadPostPop">
+            <div className="uploadPostContents">
+              <Input placeholder="Description" autoFocus name='text' inputProps={{ ref: inputField }} />
+
+              {
+                image ?
+                  <div className="postImagePreview">
+                    <div className="closeImagePreview" onClick={closeImagePreview}><CloseIcon /></div>
+                    <img src={image} alt="image" />
+                  </div> :
+                  <Stack className='addToPost' direction="row" alignItems="center" spacing={2}>
+                    <input
+                      id="icon-button-file"
+                      type="file"
+                      accept="image/*"
+                      onChange={imageHandler}
+                      onClick={(e) => { e.target.value = null }}
+                      style={{ display: 'none' }}
+                    />
+                    <label htmlFor="icon-button-file" className="addToPost">
+                      Add to your Post
+                      <IconButton color="primary" aria-label="upload picture" component="span">
+                        <ImageIcon />
+                      </IconButton>
+                    </label>
+                  </Stack>
+              }
+              <Button variant='contained' className='postButton' onClick={postContent}>Post</Button>
+            </div>
+          </div>
+        </>
+        : ''}
     </div>
   );
 };
