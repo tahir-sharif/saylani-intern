@@ -20,7 +20,7 @@ import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import { fireStore } from "../../firebase/Firebase";
 
-const Navbar = ({ setsettingsActive, profileImageUrl }) => {
+const Navbar = ({ setsettingsActive, profileImageUrl, setsrchedUserData }) => {
   const [usersData, setusersData] = React.useState([]);
   const [dataSet, setdataSet] = React.useState(false);
   const [suggestionData, setsuggestionData] = useState([]);
@@ -42,12 +42,26 @@ const Navbar = ({ setsettingsActive, profileImageUrl }) => {
   const filterSuggestion = (e) => {
     const searchWord = e.target.value;
     setinputValue(searchWord);
-    const myArr = usersData.map((obj) => obj.name);
-    const filteredData = myArr.filter((name) => {
-      const lowerCaseName = name.toLowerCase();
-      return lowerCaseName.indexOf(searchWord.toLowerCase()) !== -1;
+    const filteredData = usersData.filter((obj) => {
+      const lowerCaseName = obj.name.toLowerCase();
+      if (e.target.value) {
+        return lowerCaseName.indexOf(searchWord.toLowerCase()) !== -1;
+      }
     });
+    console.log(filteredData);
     setsuggestionData(filteredData);
+  };
+  const getUserDataFromSrch = (e) => {
+    const dataArr = [];
+    setsrchedUserData({});
+    fireStore
+      .collection("usersData")
+      .doc(e.target.id)
+      .get()
+      .then((data) => {
+        dataArr.push(data.data());
+        setsrchedUserData(...dataArr);
+      });
   };
 
   const navigate = useNavigate();
@@ -153,11 +167,17 @@ const Navbar = ({ setsettingsActive, profileImageUrl }) => {
               </Search>
               <div className="suggestions">
                 {suggestionData.length
-                  ? // <div className="suggestion">Tahir</div>
-                    // <div className="suggestion">Tahir</div>
-                    // <div className="suggestion">Tahir</div>
-                    suggestionData.map((obj) => {
-                      return <div className="suggestion">{obj}</div>;
+                  ? suggestionData.map((obj) => {
+                      return (
+                        <div
+                          key={obj.name}
+                          id={obj.accountId}
+                          className="suggestion"
+                          onClick={getUserDataFromSrch}
+                        >
+                          {obj.name}
+                        </div>
+                      );
                     })
                   : ""}
               </div>

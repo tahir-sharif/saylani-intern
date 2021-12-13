@@ -26,6 +26,7 @@ const Signup = () => {
         fireStore.collection("usersData").doc(user.user.uid).set({
           name: signupData.userName,
           email: signupData.email,
+          accountId: user.user.uid,
         });
         setsignupData({});
         navigate("/home");

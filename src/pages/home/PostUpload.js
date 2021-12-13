@@ -6,7 +6,7 @@ import ImageIcon from "@mui/icons-material/Image";
 import Stack from "@mui/material/Stack";
 import CloseIcon from "@mui/icons-material/Close";
 
-const HomesContent = ({ getFireStoreData }) => {
+const PostUpload = ({ fireUserData }) => {
   const [postPopup, setpostPopup] = useState(false);
   const [image, setimage] = useState("");
   const [imageTarget, setimageTarget] = useState({});
@@ -73,7 +73,7 @@ const HomesContent = ({ getFireStoreData }) => {
   return (
     <div className="posts">
       <div className="uploadContent" onClick={() => setpostPopup(true)}>
-        <div className="wts">What's On your Mind, {"Tahir"}?</div>
+        <div className="wts">What's On your Mind, {fireUserData.name}?</div>
       </div>
 
       {postPopup ? (
@@ -148,4 +148,4 @@ const HomesContent = ({ getFireStoreData }) => {
   );
 };
 
-export default HomesContent;
+export default PostUpload;
