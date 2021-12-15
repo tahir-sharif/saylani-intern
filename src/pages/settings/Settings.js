@@ -7,7 +7,9 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { storage } from "../../firebase/Firebase";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
-import CustomizedSnackbars, { handleClick } from "../../components/snackbar/Snackbar";
+import CustomizedSnackbars, {
+  handleClick,
+} from "../../components/snackbar/Snackbar";
 
 const Settings = ({
   setsettingsActive,
@@ -20,12 +22,7 @@ const Settings = ({
   const [toggleImgZoom, settoggleImgZoom] = useState(false);
   const [tempImage, settempImage] = useState("");
   const imageRef = useRef();
-  const [imageUpdateLoading, setimageUpdateLoading] = useState(false)
-  useEffect(() => {
-    setTimeout(() => {
-      handleClick();
-    }, 1500);
-  }, [profileImageUrl])
+  const [imageUpdateLoading, setimageUpdateLoading] = useState(false);
 
   const settingsHandler = (e) => {
     const name = e.target.name;
@@ -56,7 +53,7 @@ const Settings = ({
 
     task.on(
       "state_changed",
-      (snapshot) => { },
+      (snapshot) => {},
       (error) => {
         console.log(error);
       },
@@ -73,9 +70,12 @@ const Settings = ({
                 profileImageUrl: url,
               })
               .then(() => {
-                setimageUpdateLoading(false)
+                setimageUpdateLoading(false);
                 hideProfileBox();
                 getFireStoreData();
+                setTimeout(() => {
+                  handleClick();
+                }, 1500);
               });
           });
       }
@@ -90,11 +90,11 @@ const Settings = ({
       setimageUpdateLoading(true);
       profileImageUrl
         ? storage
-          .refFromURL(profileImageUrl)
-          .delete()
-          .then(() => {
-            uploadImageToStorage(file, name);
-          })
+            .refFromURL(profileImageUrl)
+            .delete()
+            .then(() => {
+              uploadImageToStorage(file, name);
+            })
         : uploadImageToStorage(file, name);
     }
   };
@@ -115,7 +115,7 @@ const Settings = ({
 
   return (
     <div className="mnSettings">
-        <CustomizedSnackbars msg='Profile image successfully' />
+      <CustomizedSnackbars msg="Profile image successfully" />
       <h2>Settings</h2>
       {tempImage.length ? (
         <>
@@ -125,14 +125,32 @@ const Settings = ({
               <img src={tempImage} alt="image" />
             </div>
             <div className="buttons">
-              <Button variant="contained" className={`updateButton ${imageUpdateLoading ? 'loading' : ''}`} onClick={UpdateProfileImage}>
-                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
-                <div>{imageUpdateLoading ? 'Updating...' : 'Update Profile'}</div>
+              <Button
+                variant="contained"
+                className={`updateButton ${
+                  imageUpdateLoading ? "loading" : ""
+                }`}
+                onClick={UpdateProfileImage}
+              >
+                <div class="lds-ring">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </div>
+                <div>
+                  {imageUpdateLoading ? "Updating..." : "Update Profile"}
+                </div>
               </Button>
-              <Button variant="outlined" className={`updateButton ${imageUpdateLoading ? 'loading' : ''}`} onClick={hideProfileBox}>
+              <Button
+                variant="outlined"
+                className={`updateButton ${
+                  imageUpdateLoading ? "loading" : ""
+                }`}
+                onClick={hideProfileBox}
+              >
                 Cancel
               </Button>
-
             </div>
           </div>
         </>
@@ -157,7 +175,13 @@ const Settings = ({
                 <PhotoCameraIcon />
               </label>
             </div>
-            <img src={profileImageUrl ? profileImageUrl : 'https://i.pinimg.com/236x/38/aa/95/38aa95f88d5f0fc3fc0f691abfaeaf0c.jpg'} />
+            <img
+              src={
+                profileImageUrl
+                  ? profileImageUrl
+                  : "https://i.pinimg.com/236x/38/aa/95/38aa95f88d5f0fc3fc0f691abfaeaf0c.jpg"
+              }
+            />
           </div>
         </div>
 

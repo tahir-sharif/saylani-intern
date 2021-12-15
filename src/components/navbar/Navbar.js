@@ -20,8 +20,11 @@ import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import { fireStore } from "../../firebase/Firebase";
 
-const Navbar = ({ setsettingsActive, profileImageUrl, getUserDataFromSrch }) => {
-
+const Navbar = ({
+  setsettingsActive,
+  profileImageUrl,
+  getUserDataFromSrch,
+}) => {
   const [usersData, setusersData] = React.useState([]);
   const [dataSet, setdataSet] = React.useState(false);
   const [suggestionData, setsuggestionData] = useState([]);
@@ -42,7 +45,7 @@ const Navbar = ({ setsettingsActive, profileImageUrl, getUserDataFromSrch }) => 
   });
   const filterSuggestion = (e) => {
     const searchWord = e.target.value;
-    console.log(searchWord)
+    console.log(searchWord);
     setinputValue(searchWord);
     // const myArr = usersData.map((obj) => obj.name);
     const filteredData = usersData.filter((obj) => {
@@ -50,26 +53,39 @@ const Navbar = ({ setsettingsActive, profileImageUrl, getUserDataFromSrch }) => 
       if (searchWord) {
         return lowerCaseName.indexOf(searchWord.toLowerCase()) !== -1;
       } else {
-        return lowerCaseName == 'xyz'
+        return lowerCaseName == "xyz";
       }
     });
-    const arrLenth = filteredData.length
-    arrLenth > 5 ? filteredData.length = 6 : filteredData.length = arrLenth
-    setsuggestionData(filteredData); console.log(filteredData)
+    const arrLenth = filteredData.length;
+    arrLenth > 5 ? (filteredData.length = 6) : (filteredData.length = arrLenth);
+    setsuggestionData(filteredData);
+    console.log(filteredData);
   };
   const getAccountInfo = (e) => {
-    console.log(e.target.id)
-  }
+    console.log(e.target.id);
+  };
   const suggestionList = suggestionData.map((obj) => {
-    return <div className="suggestion" id={obj.accountId} onClick={getAccountInfo}>
-      <div className="profileIcon">
-        <img src={obj.profileImageUrl ? obj.profileImageUrl : 'https://i.pinimg.com/236x/38/aa/95/38aa95f88d5f0fc3fc0f691abfaeaf0c.jpg'} alt="" />
+    return (
+      <div
+        className="suggestion"
+        id={obj.accountId}
+        onClick={getUserDataFromSrch}
+      >
+        {/* <div className="profileIcon">
+          <img
+            src={
+              obj.profileImageUrl
+                ? obj.profileImageUrl
+                : "https://i.pinimg.com/236x/38/aa/95/38aa95f88d5f0fc3fc0f691abfaeaf0c.jpg"
+            }
+            alt="profileicon"
+          />
+        </div> */}
+        <Avatar src={obj.profileImageUrl} />
+        <div className="suggestionName">{obj.name}</div>
       </div>
-      <div className="suggestionName">
-        {obj.name}
-      </div>
-    </div>;
-  })
+    );
+  });
 
   const navigate = useNavigate();
   const settings = [
@@ -172,7 +188,7 @@ const Navbar = ({ setsettingsActive, profileImageUrl, getUserDataFromSrch }) => 
                   }}
                 />
               </Search>
-              <div className="suggestions">
+              {/* <div className="suggestions">
                 {suggestionData.length
                   ? suggestionData.map((obj) => {
                     return (
@@ -187,9 +203,10 @@ const Navbar = ({ setsettingsActive, profileImageUrl, getUserDataFromSrch }) => 
                     );
                   })
                   : ""}
-              </div>
+              </div> */}
+              <div className="suggestions">{suggestionList}</div>
             </div>
-            APP
+            Freinds App
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
 

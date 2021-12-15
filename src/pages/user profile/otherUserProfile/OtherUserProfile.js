@@ -11,7 +11,6 @@ const OtherUserProfile = ({ allPosts, srchedUserData }) => {
   const { profileImageUrl, name } = srchedUserData;
   return (
     <>
-    <div>{'< back'}</div>
       <div className="profileProfilePic">
         <div className="image">
           <img
@@ -22,7 +21,7 @@ const OtherUserProfile = ({ allPosts, srchedUserData }) => {
             }
           />
         </div>
-          <h3>{name}</h3>
+        <h3>{name}</h3>
       </div>
       {otherPosts.length ? <Posts posts={otherPosts} /> : "No Posts"}
     </>

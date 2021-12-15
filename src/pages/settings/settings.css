@@ -24,6 +24,7 @@
   align-items: center;
   flex-direction: column;
   margin: 32px 0;
+  position: relative;
 }
 .profileProfilePic .image {
   box-shadow: 0 0 10px #0000003d;
@@ -41,7 +42,6 @@
   background: #00000029;
 }
 .updateProfile {
-  position: absolute;
   width: 74%;
   height: 55%;
   background: #ffffff;
@@ -55,6 +55,10 @@
   overflow: hidden;
   box-shadow: 0 0 31px #0000004f;
   align-items: center;
+  position: relative;
+}
+.mnSettings .updateProfile {
+  position: absolute;
 }
 .updateProfile .previewImage {
   border-radius: 15px;
