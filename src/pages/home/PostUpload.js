@@ -37,7 +37,7 @@ const PostUpload = ({ fireUserData }) => {
 
     task.on(
       "state_changed",
-      (snapshot) => {},
+      (snapshot) => { },
       (error) => {
         console.log(error);
       },
@@ -63,9 +63,11 @@ const PostUpload = ({ fireUserData }) => {
     if (imageTarget) {
       uploadImageToStorage(imageTarget[0], imageTarget[0].name);
     } else {
+      const user = auth .currentUser
       fireStore.collection("posts").add({
         text: txt,
-        postedBy: auth.currentUser.email,
+        postedBy: auth.user.email,
+        accountId: auth.user.uid
       });
     }
   };

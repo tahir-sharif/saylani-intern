@@ -20,7 +20,8 @@ import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import { fireStore } from "../../firebase/Firebase";
 
-const Navbar = ({ setsettingsActive, profileImageUrl, setsrchedUserData }) => {
+const Navbar = ({ setsettingsActive, profileImageUrl, getUserDataFromSrch }) => {
+
   const [usersData, setusersData] = React.useState([]);
   const [dataSet, setdataSet] = React.useState(false);
   const [suggestionData, setsuggestionData] = useState([]);
@@ -41,28 +42,34 @@ const Navbar = ({ setsettingsActive, profileImageUrl, setsrchedUserData }) => {
   });
   const filterSuggestion = (e) => {
     const searchWord = e.target.value;
+    console.log(searchWord)
     setinputValue(searchWord);
+    // const myArr = usersData.map((obj) => obj.name);
     const filteredData = usersData.filter((obj) => {
       const lowerCaseName = obj.name.toLowerCase();
-      if (e.target.value) {
+      if (searchWord) {
         return lowerCaseName.indexOf(searchWord.toLowerCase()) !== -1;
+      } else {
+        return lowerCaseName == 'xyz'
       }
     });
-    console.log(filteredData);
-    setsuggestionData(filteredData);
+    const arrLenth = filteredData.length
+    arrLenth > 5 ? filteredData.length = 6 : filteredData.length = arrLenth
+    setsuggestionData(filteredData); console.log(filteredData)
   };
-  const getUserDataFromSrch = (e) => {
-    const dataArr = [];
-    setsrchedUserData({});
-    fireStore
-      .collection("usersData")
-      .doc(e.target.id)
-      .get()
-      .then((data) => {
-        dataArr.push(data.data());
-        setsrchedUserData(...dataArr);
-      });
-  };
+  const getAccountInfo = (e) => {
+    console.log(e.target.id)
+  }
+  const suggestionList = suggestionData.map((obj) => {
+    return <div className="suggestion" id={obj.accountId} onClick={getAccountInfo}>
+      <div className="profileIcon">
+        <img src={obj.profileImageUrl ? obj.profileImageUrl : 'https://i.pinimg.com/236x/38/aa/95/38aa95f88d5f0fc3fc0f691abfaeaf0c.jpg'} alt="" />
+      </div>
+      <div className="suggestionName">
+        {obj.name}
+      </div>
+    </div>;
+  })
 
   const navigate = useNavigate();
   const settings = [
@@ -168,17 +175,17 @@ const Navbar = ({ setsettingsActive, profileImageUrl, setsrchedUserData }) => {
               <div className="suggestions">
                 {suggestionData.length
                   ? suggestionData.map((obj) => {
-                      return (
-                        <div
-                          key={obj.name}
-                          id={obj.accountId}
-                          className="suggestion"
-                          onClick={getUserDataFromSrch}
-                        >
-                          {obj.name}
-                        </div>
-                      );
-                    })
+                    return (
+                      <div
+                        key={obj.name}
+                        id={obj.accountId}
+                        className="suggestion"
+                        onClick={getUserDataFromSrch}
+                      >
+                        {obj.name}
+                      </div>
+                    );
+                  })
                   : ""}
               </div>
             </div>

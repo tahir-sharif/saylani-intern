@@ -6,6 +6,8 @@ import Settings from "../settings/Settings";
 import Navbar from "../../components/navbar/Navbar";
 import Posts from "./Posts";
 import OtherUserProfile from "../user profile/otherUserProfile/OtherUserProfile";
+import PostUpload from "./PostUpload";
+
 
 const Home = () => {
   const initialValue = { name: "", email: "", profileImageUrl: "" };
@@ -35,7 +37,25 @@ const Home = () => {
         setfireUserData({ ...fireUserData });
       });
   };
-  console.log("settings page");
+  const getUserDataFromSrch = (e) => {
+    const dataArr = [];
+    setsrchedUserData({});
+    fireStore
+      .collection("usersData")
+      .doc(e.target.id)
+      .get()
+      .then((data) => {
+        data = data.data()
+        const accountId = data.accountId;
+        dataArr.push(data);
+        const accountPosts = fireStore.collection('usersData').where('postedBy', '==', accountId)
+        setsrchedUserData(...dataArr);
+        console.log(accountPosts.get().then((snapshaot) => {
+          console.log(snapshaot)
+        }))
+      });
+  };
+
   fireStore.collection("posts").onSnapshot((snap) => {
     const dataArr = [];
     snap.docChanges().forEach((change) => {
@@ -58,6 +78,7 @@ const Home = () => {
         profileImageUrl={fireUserData.profileImageUrl}
         srchedUserData={srchedUserData}
         setsrchedUserData={setsrchedUserData}
+        getUserDataFromSrch={getUserDataFromSrch}
       />
       <div className="pageContainer">
         {settingsActive ? (
@@ -70,9 +91,12 @@ const Home = () => {
         ) : (
           <>
             {srchedUserData.name ? (
-              <OtherUserProfile srchedUserData={srchedUserData}/>
+              <OtherUserProfile allPosts={posts} srchedUserData={srchedUserData} />
             ) : (
-              <Posts posts={posts} fireUserData={fireUserData} />
+              <>
+                <PostUpload fireUserData={fireUserData}/>
+                <Posts posts={posts} />
+              </>
             )}
           </>
         )}
